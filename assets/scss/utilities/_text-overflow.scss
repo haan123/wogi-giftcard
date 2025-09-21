@@ -1,0 +1,10 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,32 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@mixin gen-text-align($prefix: null) {
+  .#{$prefix}text-center {
+    text-align: center;
+  }
+
+  .#{$prefix}text-left {
+    text-align: left;
+  }
+
+  .#{$prefix}text-right {
+    text-align: right;
+  }
+
+  @content;
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    @include tools.mediaMin($screen-size) {
+      @include gen-text-align(#{$screen-type + ':'}) {
+      }
+    }
+  } @else {
+    @include gen-text-align() {
+    }
+  }
+}

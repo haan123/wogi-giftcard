@@ -1,0 +1,94 @@
+/* ==========================================================================
+   #SPACINGS
+   ========================================================================== */
+
+/**
+ *   .m[t/b/l/r]-[n] {}
+ *   .p[t/b/l/r]-[n] {}
+ */
+
+@use 'sass:list';
+@use 'sass:map';
+
+@use '../settings';
+@use '../tools';
+
+$spacing-directions: (
+  null: null,
+  't': '-top',
+  'r': '-right',
+  'b': '-bottom',
+  'l': '-left',
+  'x': '-left' '-right',
+  'y': '-top' '-bottom',
+) !default;
+
+$spacing-properties: (
+  'p': 'padding',
+  'm': 'margin',
+) !default;
+
+$spacing-sizes: (
+  auto: auto,
+);
+
+@for $i from 1 through list.length(settings.$base-spacing-units) {
+  $key: list.nth(settings.$base-spacing-units, $i); // Get the name
+  $value: tools.rem($key * settings.$base-baseline); // Get the value
+  
+  $spacing-sizes: map.merge($spacing-sizes, (#{$key}: $value)); // Add to the map
+}
+
+@mixin gen-spacing($prefix: null) {
+  @each $property-namespace, $property in $spacing-properties {
+    @each $direction-namespace, $direction-rules in $spacing-directions {
+      @each $size-namespace, $size in $spacing-sizes {
+        $class-name: #{$property-namespace}#{$direction-namespace}-#{$size-namespace};
+
+        @if $prefix {
+          $class-name: #{$prefix}#{$property-namespace}#{$direction-namespace}-#{$size-namespace};
+        }
+
+        .#{tools.escape-class-name($class-name)} {
+          @each $direction in $direction-rules {
+            #{$property}#{$direction}: $size;
+
+            @content;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin gen-gap($prefix: null) {
+  @each $size-namespace, $size in $spacing-sizes {
+    $class-name: #{'gap-' + $size-namespace};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'gap-' + $size-namespace};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      gap: $size;
+
+      @content;
+    }
+  }
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    @include tools.mediaMin($screen-size) {
+      @include gen-spacing(#{$screen-type + ':'}) {
+      }
+      @include gen-gap(#{$screen-type + ':'}) {
+      }
+    }
+  } @else {
+    @include gen-spacing() {
+    }
+    @include gen-gap() {
+    }
+  }
+}

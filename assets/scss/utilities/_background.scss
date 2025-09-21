@@ -1,0 +1,18 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@each $palette-name, $palette in settings.$palettes {
+  @if meta.type-of($palette) == 'color' {
+    .#{tools.escape-class-name('bg-' + $palette-name)} {
+      background-color: $palette;
+    }
+  } @else {
+    @each $key, $value in $palette {
+      .#{tools.escape-class-name('bg-' + $palette-name + '-' + $key)} {
+        background-color: $value;
+      }
+    }
+  }
+}

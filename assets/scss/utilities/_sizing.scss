@@ -1,0 +1,113 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+$width-sizes: (
+  auto: auto,
+);
+
+@for $i from 1 through list.length(settings.$base-spacing-units) {
+  $key: list.nth(settings.$base-spacing-units, $i); // Get the name
+  $value: tools.rem($key * settings.$base-baseline); // Get the value
+
+  $width-sizes: map.merge($width-sizes, (#{$key}: $value)); // Add to the map
+}
+
+@mixin gen-width($prefix: null) {
+  @each $name, $value in $width-sizes {
+    $class-name: #{'w-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'w-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      width: $value;
+
+      @content;
+    }
+  }
+
+  @each $name, $value in settings.$base-widths {
+    $class-name: #{'w-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'w-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      width: $value;
+
+      @content;
+    }
+  }
+}
+
+@mixin gen-max-width($prefix: null) {
+  @each $name, $value in settings.$base-max-widths {
+    $class-name: #{'max-w-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'max-w-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      max-width: $value;
+
+      @content;
+    }
+  }
+}
+
+@mixin gen-min-width($prefix: null) {
+   @each $name, $value in $width-sizes {
+    $class-name: #{'min-w-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'min-w-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      width: $value;
+
+      @content;
+    }
+  }
+
+  @each $name, $value in settings.$base-max-widths {
+    $class-name: #{'min-w-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'min-w-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      max-width: $value;
+
+      @content;
+    }
+  }
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    @include tools.mediaMin($screen-size) {
+      @include gen-width(#{$screen-type + ':'}) {
+      }
+      @include gen-max-width(#{$screen-type + ':'}) {
+      }
+      @include gen-min-width(#{$screen-type + ':'}) {
+      }
+    }
+  } @else {
+    @include gen-width() {
+    }
+    @include gen-max-width() {
+    }
+    @include gen-min-width() {
+    }
+  }
+}

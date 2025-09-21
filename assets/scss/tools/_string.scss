@@ -1,0 +1,30 @@
+@use 'sass:string';
+
+@function str-replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace +
+      str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function escape-class-name($value) {
+  $escaped: $value;
+
+  @if string.index($escaped, '.') {
+    $escaped: str-replace($escaped, '.', '\\.');
+  }
+
+  @if string.index($escaped, ':') {
+    $escaped: str-replace($escaped, ':', '\\:');
+  }
+
+  @if string.index($escaped, '/') {
+    $escaped: str-replace($escaped, '/', '\\/');
+  }
+
+  @return $escaped;
+}

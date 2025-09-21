@@ -1,0 +1,52 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@mixin gen-font-weight($prefix: null) {
+  @each $name, $value in settings.$base-font-weight {
+    $class-name: #{'font-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'font-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      font-weight: $value;
+
+      @content;
+    }
+  }
+}
+
+@mixin gen-font-size($prefix: null) {
+  @each $name, $value in settings.$base-font-sizes {
+    $class-name: #{'text-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'text-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      @include tools.font-size($value);
+
+      @content;
+    }
+  }
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    @include tools.mediaMin($screen-size) {
+      @include gen-font-weight(#{$screen-type + ':'}) {
+      }
+      @include gen-font-size(#{$screen-type + ':'}) {
+      }
+    }
+  } @else {
+    @include gen-font-weight() {
+    }
+    @include gen-font-size() {
+    }
+  }
+}

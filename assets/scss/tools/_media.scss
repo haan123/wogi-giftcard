@@ -1,0 +1,7 @@
+@use '../settings';
+
+@mixin mediaMin($value) {
+  @media (width >= $value) {
+    @content;
+  }
+}

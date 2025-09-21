@@ -1,0 +1,30 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@mixin gen-visibility-utilities($prefix: null) {
+  .#{$prefix}overflow-hidden {
+    overflow: hidden;
+  }
+
+  .#{$prefix}overflow-auto {
+    overflow: auto;
+  }
+
+  @content;
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    $prefix: #{tools.escape-class-name($screen-type + ':')};
+
+    @include tools.mediaMin($screen-size) {
+      @include gen-visibility-utilities($prefix) {
+      }
+    }
+  } @else {
+    @include gen-visibility-utilities() {
+    }
+  }
+}

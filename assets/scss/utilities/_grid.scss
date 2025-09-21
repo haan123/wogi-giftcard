@@ -1,0 +1,42 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@mixin gen-grid($prefix: null) {
+  @each $name, $value in settings.$base-grid-template-columns {
+    $class-name: #{'grid-cols-' + $name};
+
+    @if $prefix {
+      $class-name: #{$prefix}#{'grid-cols-' + $name};
+    }
+
+    .#{tools.escape-class-name($class-name)} {
+      grid-template-columns: $value;
+
+      @content;
+    }
+  }
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    $prefix: #{$screen-type + ':'};
+
+    @include tools.mediaMin($screen-size) {
+      .#{tools.escape-class-name($prefix + 'grid')} {
+        display: grid;
+      }
+
+      @include gen-grid($prefix) {
+      }
+    }
+  } @else {
+    .grid {
+      display: grid;
+    }
+
+    @include gen-grid() {
+    }
+  }
+}

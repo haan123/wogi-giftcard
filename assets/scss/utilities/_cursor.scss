@@ -1,0 +1,8 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+.cursor-pointer {
+  cursor: pointer;
+}

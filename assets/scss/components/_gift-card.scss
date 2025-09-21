@@ -1,0 +1,22 @@
+@use 'sass:map';
+
+@use '../settings';
+
+.c-gift-card__img {
+  position: relative;
+  width: 100%;
+  padding-top: 66.67%; /* 3:2 aspect ratio */
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 70%;
+    height: 100%;
+    margin: auto;
+    object-fit: contain;
+
+  }
+}

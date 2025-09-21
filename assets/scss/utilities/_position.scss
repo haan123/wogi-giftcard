@@ -1,0 +1,28 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.left-0 {
+  top: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}

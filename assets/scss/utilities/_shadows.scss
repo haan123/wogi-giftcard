@@ -1,0 +1,16 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@each $name, $value in settings.$shadows {
+  @if $name {
+    .#{tools.escape-class-name('shadow-' + $name)} {
+      box-shadow: $value;
+    }
+  } @else {
+    .#{tools.escape-class-name('shadow')} {
+      box-shadow: $value;
+    }
+  }
+}

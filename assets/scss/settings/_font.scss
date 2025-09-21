@@ -1,0 +1,30 @@
+$font-family:
+  inter Global,
+  -apple-system,
+  Segoe UI,
+  Helvetica,
+  Arial,
+  sans-serif,
+  Apple Color Emoji,
+  Segoe UI Emoji !default;
+
+$base-font-size: 16px !default;
+
+$base-font-weight: (
+  thin: 100,
+  extralight: 200,
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+) !default;
+
+$base-font-sizes: (
+  xs: 12px,
+  sm: 14px,
+  base: 16px,
+  lg: 18px,
+  xl: 20px,
+) !default;

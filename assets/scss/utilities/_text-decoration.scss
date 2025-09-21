@@ -1,0 +1,12 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+.underline {
+  text-decoration: underline;
+}
+
+.underline-none {
+  text-decoration: none;
+}

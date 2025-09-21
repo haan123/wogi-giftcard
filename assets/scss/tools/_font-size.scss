@@ -1,0 +1,18 @@
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../settings';
+@use './rem' as *;
+
+@mixin font-size($font-size, $line-height: auto) {
+  font-size: #{rem($font-size)};
+
+  @if ($line-height == 'auto') {
+    $lines: math.ceil(math.div($font-size, settings.$base-baseline)) + 1;
+    $line-height: $lines * settings.$base-baseline;
+
+    line-height: math.div($line-height, $font-size);
+  } @else {
+    line-height: $line-height;
+  }
+}

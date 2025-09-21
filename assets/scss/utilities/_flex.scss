@@ -1,0 +1,62 @@
+@use 'sass:meta';
+
+@use '../settings';
+@use '../tools';
+
+@mixin gen-flex-utilities($prefix: null) {
+  .#{$prefix}flex-col {
+    flex-direction: column;
+  }
+
+  .#{$prefix}flex-row {
+    flex-direction: row;
+  }
+
+  .#{$prefix}inline-flex {
+    display: inline-flex;
+  }
+
+  .#{$prefix}flex {
+    display: flex;
+  }
+
+  .#{$prefix}items-center {
+    align-items: center;
+  }
+
+  .#{$prefix}justify-between {
+    justify-content: space-between;
+  }
+
+  .#{$prefix}justify-center {
+    justify-content: center;
+  }
+
+  .#{$prefix}justify-end {
+    justify-content: end;
+  }
+
+  .#{$prefix}flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  @content;
+}
+
+@each $screen-type, $screen-size in settings.$breakpoints {
+  @if $screen-size {
+    $prefix: #{tools.escape-class-name($screen-type + ':')};
+
+    @include tools.mediaMin($screen-size) {
+      @include gen-flex-utilities($prefix) {
+      }
+    }
+  } @else {
+    .grid {
+      display: grid;
+    }
+
+    @include gen-flex-utilities() {
+    }
+  }
+}
