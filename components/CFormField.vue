@@ -71,7 +71,7 @@
     </div>
 
     <!-- validation message -->
-    <div :type="computedStatus" style="min-height: 16px">
+    <div :type="computedStatus" style="min-height: 16px" class="text-red-500">
       <slot v-if="$slots.message" name="message" />
       <template v-else-if="computedMessage">
         {{ computedMessage }}
@@ -83,7 +83,7 @@
 <script>
 import input from '~/mixins/input'
 
-function getValidationMessage(field, translate) {
+function getValidationMessage(field) {
   if (isInvalidatedField(field)) {
     if (field.error && field.validation.valid) {
       return field.error
@@ -92,7 +92,7 @@ function getValidationMessage(field, translate) {
     for (let i = 0; i < rules.length; i++) {
       const rule = rules[i]
       if (!rule.valid) {
-        return rule.error || translate(`validation.${rule.name}`, field.props)
+        return rule.error(field)
       }
     }
   }
@@ -141,7 +141,7 @@ export default {
       return this.id || this.internalField.props.id || `${this.idPrefix}-${_uid++}`
     },
     computedMessage() {
-      return this.message || getValidationMessage(this.internalField, this.$t)
+      return this.message || getValidationMessage(this.internalField)
     },
     computedStatus() {
       if (this.status) return this.status

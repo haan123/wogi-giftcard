@@ -1,3 +1,6 @@
+import { required, requiredIf } from "@vue-formily/rules"
+import { withMessage } from "./helpers"
+
 export const personalDeliverySchema = {
   formId: 'personalDelivery',
   formType: 'group',
@@ -11,8 +14,9 @@ export const personalDeliverySchema = {
         placeholder: 'Enter recipient email',
         inputType: 'email',
       },
-      rules: [
-      ]
+      rules: [withMessage(requiredIf((value, props, field) => {
+        return field.parent.parent.$deliveryType.raw === 'personal'
+      }))],
     },
     {
       formId: 'recipientPhone',
@@ -24,8 +28,9 @@ export const personalDeliverySchema = {
         inputType: 'phone',
         prefix: '+65'
       },
-      rules: [
-      ]
+      rules: [withMessage(requiredIf((value, props, field) => {
+        return field.parent.parent.$deliveryType.raw === 'personal'
+      }))],
     },
   ]
 }
@@ -43,8 +48,9 @@ export const giftDeliverySchema = {
         placeholder: 'Enter sender name',
         inputType: 'email',
       },
-      rules: [
-      ]
+      rules: [withMessage(requiredIf((value, props, field) => {
+        return field.parent.parent.$deliveryType.raw === 'gift'
+      }))],
     },
     {
       formId: 'recipientName',
@@ -55,10 +61,37 @@ export const giftDeliverySchema = {
         placeholder: 'Enter recipient name',
         inputType: 'email',
       },
-      rules: [
-      ]
+      rules: [withMessage(requiredIf((value, props, field) => {
+        return field.parent.parent.$deliveryType.raw === 'gift'
+      }))],
     },
-    ...personalDeliverySchema.fields,
+    {
+      formId: 'recipientEmail',
+      formType: 'field',
+      type: 'string',
+      props: {
+        label: 'Recipient email',
+        placeholder: 'Enter recipient email',
+        inputType: 'email',
+      },
+      rules: [withMessage(requiredIf((value, props, field) => {
+        return field.parent.parent.$deliveryType.raw === 'gift'
+      }))],
+    },
+    {
+      formId: 'recipientPhone',
+      formType: 'field',
+      type: 'string',
+      props: {
+        label: 'Recipient phone',
+        placeholder: 'Enter recipient phone',
+        inputType: 'phone',
+        prefix: '+65'
+      },
+      rules: [withMessage(requiredIf((value, props, field) => {
+        return field.parent.parent.$deliveryType.raw === 'gift'
+      }))],
+    },
   ]
 }
 
@@ -75,8 +108,6 @@ export const customDeliveryTimeSchema = {
         placeholder: 'Select delivery date',
         inputType: 'date',
       },
-      rules: [
-      ]
     },
     {
       formId: 'period',
@@ -113,7 +144,6 @@ export const loginFormSchema = {
       formId: 'amount',
       formType: 'field',
       type: 'number',
-      value: 10,
       props: {
         label: 'Select gift amount',
         inputType: 'tag-group',
@@ -141,7 +171,6 @@ export const loginFormSchema = {
       formId: 'deliveryType',
       formType: 'field',
       type: 'string',
-      value: 'personal',
       props: {
         label: 'Delivery type',
         inputType: 'radio-group',
@@ -163,7 +192,6 @@ export const loginFormSchema = {
       formId: 'deliveryTime',
       formType: 'field',
       type: 'string',
-      value: 'immediately',
       props: {
         label: 'Delivery time',
         inputType: 'radio-group',
@@ -177,7 +205,7 @@ export const loginFormSchema = {
             value: 'custom'
           }
         ]
-      }
+      },
     },
     customDeliveryTimeSchema,
     {
@@ -189,7 +217,8 @@ export const loginFormSchema = {
         placeholder: 'Enter gift message',
         inputType: 'textarea',
         rows: 8
-      }
+      },
+      rules: [withMessage(required)],
     },
   ]
 }

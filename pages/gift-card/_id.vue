@@ -115,14 +115,28 @@ export default {
     getLinkIcon(type) {
       return LINK_ICONS[type]
     },
-    onSend() {
-      console.log('Form data: ', this.form.value)
+    async onSend() {
+      await this.form.validate()
+
+      this.form.shake()
+
+      console.log('Form valid: ', this.form.valid)
+      console.log('Amount: ', this.form.$amount.value)
+      console.log('Delivery type: ', this.form.$deliveryType.value)
+      console.log('Personal Delivery: ', this.form.$personalDelivery.value)
+      console.log('Gift Delivery: ', this.form.$giftDelivery.value)
+      console.log('Delivery time: ', this.form.$deliveryTime.value)
+      console.log('Custom Delivery Time: ', this.form.$customDeliveryTime.value)
+      console.log('Gift message: ', this.form.$giftMessage.value)
     }
   }
 }
 </script>
 
 <style lang="scss">
+.c-form-field {
+  margin-top: 16px;
+}
 // .c-form--personalDelivery,
 // .c-form--giftDelivery {
 //    display: flex;
